@@ -1,0 +1,42 @@
+﻿@model Domain.Requests.User.UserRequest
+@{
+    ViewData["Title"] = "Criação de Usuário";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Error?.Message))
+{
+    <div class='alert alert-dismissable alert-info'>
+        <button type='button' class='close' data-dismiss='alert'>x</button>
+        @ViewBag.Message
+    </div>
+
+}
+<div class="card">
+    <div class="card-header">
+        Login
+    </div>
+    <div class="card-body">
+        @*        @using (Html.BeginForm("SignUp", "User", FormMethod.Post))
+        { *@
+        <form asp-action="SignIn">
+            <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email address</label>
+                    <input asp-for="Email" type="email" class="form-control" aria-describedby="emailHelp">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Senha</label>
+                    <input asp-for="Password" type="password" class="form-control">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-success" value="SignIn">Login</button>
+        </form>
+        @* } *@
+        <p>Ainda não tem uma conta? <a asp-controller="User" asp-action="SignUp">Crie sua conta</a></p>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
