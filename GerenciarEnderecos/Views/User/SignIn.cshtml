@@ -16,22 +16,25 @@
         Login
     </div>
     <div class="card-body">
-        @*        @using (Html.BeginForm("SignUp", "User", FormMethod.Post))
-        { *@
         <form asp-action="SignIn">
-            <div class="mb-3">
-                    <label asp-for="Email" class="form-label">Email address</label>
-                    <input asp-for="Email" type="email" class="form-control" aria-describedby="emailHelp">
-                    <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="col-3">
+                <label asp-for="Email" class="form-label">Email address</label>
+                <input asp-for="Email" type="email" class="form-control" aria-describedby="emailHelp">
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="mb-3">
-                    <label asp-for="Password" class="form-label">Senha</label>
-                    <input asp-for="Password" type="password" class="form-control">
-                    <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="col-3">
+                <label asp-for="Password" class="form-label">Senha</label>
+                <input asp-for="Password" type="password" class="form-control">
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-success" value="SignIn">Login</button>
+            <br />
+            <div class="row">
+                <div class="col-3">
+                    <button type="submit" class="btn btn-success" value="SignIn">Login</button>
+                </div>
+            </div>
+
         </form>
-        @* } *@
         <p>Ainda não tem uma conta? <a asp-controller="User" asp-action="SignUp">Crie sua conta</a></p>
     </div>
 </div>

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciarEnderecos", "GerenciarEnderecos\GerenciarEnderecos.csproj", "{EA3E78B9-8952-479C-9718-2B17740BAE8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GerenciarEnderecos", "GerenciarEnderecos\GerenciarEnderecos.csproj", "{EA3E78B9-8952-479C-9718-2B17740BAE8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra", "Infra\Infra.csproj", "{237CF4D2-0218-4281-BF36-069B3E8B29BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra", "Infra\Infra.csproj", "{237CF4D2-0218-4281-BF36-069B3E8B29BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{BA2E399E-F56B-4AA2-B6D5-92C0AF35B406}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{BA2E399E-F56B-4AA2-B6D5-92C0AF35B406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{FA683087-C739-4D74-A70B-0D5B238EAB6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{FA683087-C739-4D74-A70B-0D5B238EAB6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
