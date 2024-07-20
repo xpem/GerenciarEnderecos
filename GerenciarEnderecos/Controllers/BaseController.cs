@@ -18,11 +18,8 @@ namespace GerenciarEnderecos.Controllers
 
         public class CustomAuthorizationFilter : IAuthorizationFilter
         {
-
             public void OnAuthorization(AuthorizationFilterContext context)
             {
-                context.HttpContext.Session.SetString("Token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxIiwiZW1haWwiOiJlbWFudWVsX3hwZUBob3RtYWlsLmNvbSIsIm5iZiI6MTcyMTQ4MDkyNiwiZXhwIjoxNzIxOTEyOTI2LCJpYXQiOjE3MjE0ODA5MjZ9.VZw0mV2lpk5tuqJ6YIz2PV4wBvnKtCz4oOPeyxwQhKU");
-
                 if (context.HttpContext.Session.GetString("Token") == null)
                     context.HttpContext.Response.Redirect("User/SignIn");
             }
