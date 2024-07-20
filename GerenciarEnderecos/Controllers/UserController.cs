@@ -6,7 +6,7 @@ using Service;
 
 namespace GerenciarEnderecos.Controllers
 {
-    public class UserController(IUserService userService) : BaseController
+    public class UserController(IUserService userService, IJwtFunctions jwtFunctions) : BaseController(jwtFunctions)
     {
 
         public IActionResult SignUp() => View();
@@ -44,7 +44,7 @@ namespace GerenciarEnderecos.Controllers
         public async Task<IActionResult> SignOutAsync()
         {
             HttpContext.Session.Remove("Token");
-            return RedirectToAction("SignIn", "User");
+            return View("SignIn", "User");
         }
     }
 }

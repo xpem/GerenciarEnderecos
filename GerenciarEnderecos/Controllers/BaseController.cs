@@ -1,11 +1,14 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.IdentityModel.Tokens;
+using Service;
 using System.Security.Claims;
+using System.Text;
 
 namespace GerenciarEnderecos.Controllers
 {
-    public class BaseController : Controller
+    public class BaseController(IJwtFunctions jwtFunctions) : Controller
     {
 
         public class ClaimRequirementAttribute : TypeFilterAttribute
@@ -15,8 +18,11 @@ namespace GerenciarEnderecos.Controllers
 
         public class CustomAuthorizationFilter : IAuthorizationFilter
         {
+
             public void OnAuthorization(AuthorizationFilterContext context)
             {
+                context.HttpContext.Session.SetString("Token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxIiwiZW1haWwiOiJlbWFudWVsX3hwZUBob3RtYWlsLmNvbSIsIm5iZiI6MTcyMTQ4MDkyNiwiZXhwIjoxNzIxOTEyOTI2LCJpYXQiOjE3MjE0ODA5MjZ9.VZw0mV2lpk5tuqJ6YIz2PV4wBvnKtCz4oOPeyxwQhKU");
+
                 if (context.HttpContext.Session.GetString("Token") == null)
                     context.HttpContext.Response.Redirect("User/SignIn");
             }
@@ -31,22 +37,15 @@ namespace GerenciarEnderecos.Controllers
 
         protected IActionResult BuildResponse(BaseResponse baseResp) => (!string.IsNullOrEmpty(baseResp.Error?.Message)) ? BadRequest(baseResp.Error.Message) : Ok(baseResp.Content);
 
-        protected int? RecoverUidSession()
-        {
-            string? uid = null;
-
-            if (HttpContext.User.Identity is ClaimsIdentity identity)
-                uid = identity.Claims.FirstOrDefault(x => x.Type == "uid")?.Value;
-
-            return uid != null ? Convert.ToInt32(uid) : null;
-        }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            Microsoft.Extensions.Primitives.StringValues auth = context.HttpContext.Request.Headers.Authorization;
-            if (!string.IsNullOrEmpty(auth))
+
+            string token = context.HttpContext.Session.GetString("Token");
+
+            if (!string.IsNullOrEmpty(token))
             {
-                int? uid = RecoverUidSession();
+                int? uid = jwtFunctions.GetUidFromToken(token);
 
                 if (uid is null)
                 {

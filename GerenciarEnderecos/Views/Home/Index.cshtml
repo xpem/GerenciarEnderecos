@@ -1,26 +1,60 @@
-﻿@{
+﻿@* @model Domain.Requests.AddressRequest; *@
+@model IEnumerable<Domain.DTOs.Address>
+@{
     ViewData["Title"] = "Home Page";
 }
-
-
-<div class="text-center">
-    <button class="btn btn-primary" value="AddAddress" id="BtnAddAddress" onclick="ChangeVisibilityCardFormAddress()">Adicionar Endereço</button>
-    <div class="card" id="CardFormAddress" style="display:none">
-        <div class="card-header">
-            Cadastrar Endereço
+<div class="container">
+    <a class="btn btn-primary" asp-controller="Home" asp-action="Create">Adicionar</a>
+    <br/>
+    <br/>
+    <div class="card" id="CardFormAddress">
+        <div class="card-header" style=" background-color: var(--bs-success); color: var(--bs-body-bg); ">
+            Lista
         </div>
-        <div class="card-body">
+        <div class="card-body container">
+            <table class="table">
+                <tr>
+                    <th scope="col">CEP</th>
+                    <th scope="col">Rua e número</th>
+                    <th scope="col">Complemento</th>
+                    <th scope="col">Bairro</th>
+                    <th scope="col">Cidade e Estado</th>
+                    <th scope="col">Ações</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td scope="row">
+                            @string.Format(item.CEP.Substring(0, 5) + "-" + item.CEP.Substring(5, 3))
+                        </td>
+                        <td scope="row">
+                            @string.Format(item.Street + "; " + item.Number)
+                        <td scope="row">
+                                @Html.DisplayFor(modelItem => item.Complement)
+                        </td>
+                        <td scope="row">
+                                @Html.DisplayFor(modelItem => item.Neighborhood)
+                        </td>
+                        <td scope="row">
+                                @string.Format(item.City + "/" + @item.State)
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Ações">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Visualizar</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edita</a> 
+                               
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Excluir</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
         </div>
     </div>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 
-<script type="text/javascript">
-    var CardFormAddressisVisible = false;
-    function ChangeVisibilityCardFormAddress() {
-
-        if (!CardFormAddressisVisible) {
-            $("#CardFormAddress").show();
-            CardFormAddressisVisible = true;
-        }
-    };
-</script>

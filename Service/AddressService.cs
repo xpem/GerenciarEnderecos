@@ -2,18 +2,12 @@
 using Domain.DTOs;
 using Domain.Requests;
 using Infra;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service
 {
-    public class AddressService(IAddressRepo addressRepo)
+    public class AddressService(IAddressRepo addressRepo) : IAddressService
     {
-        public  async Task<BaseResponse> Create(AddressRequest addressRequest, int uid)
+        public async Task<BaseResponse> CreateAsync(AddressRequest addressRequest, int uid)
         {
             string? validateError = addressRequest.Validate();
 
@@ -26,7 +20,7 @@ namespace Service
                 Complement = addressRequest.Complement,
                 CreatedAt = DateTime.Now,
                 Neighborhood = addressRequest.Neighborhood,
-                Number = addressRequest.Number,
+                Number = Convert.ToInt32(addressRequest.Number),
                 State = addressRequest.State,
                 Street = addressRequest.Street,
                 UserId = uid
@@ -36,5 +30,9 @@ namespace Service
 
             return new BaseResponse(address);
         }
+
+        public async Task<List<Address>> GetAsync(int uid) => await addressRepo.GetAsync(uid);
+
+        public async Task<Address?> GetByIdAsync(int id, int uid) => await addressRepo.GetByIdAsync(id, uid);
     }
 }

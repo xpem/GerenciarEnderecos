@@ -20,12 +20,13 @@ builder.Services.AddScoped<IEncryptService, EncryptService>(p => new EncryptServ
 builder.Services.AddScoped<IJwtFunctions, JwtFunctions>(p => new JwtFunctions(builder.Configuration["JwtKey"]));
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.IdleTimeout = TimeSpan.FromSeconds(300000);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });

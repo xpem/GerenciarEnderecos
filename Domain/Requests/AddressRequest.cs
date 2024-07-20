@@ -10,11 +10,12 @@ namespace Domain.Requests
 {
     public record AddressRequest : BaseRequest
     {
-        [MaxLength(11)]
+        [MaxLength(8)]
+        [MinLength(8)]
         public required string CEP { get; set; }
 
         [MaxLength(5)]
-        public required int Number { get; set; }
+        public required string Number { get; set; }
 
         [MaxLength(200)]
         public required string Street { get; set; }
