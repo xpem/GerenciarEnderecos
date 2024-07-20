@@ -50,19 +50,63 @@ namespace GerenciarEnderecos.Controllers
                 return NotFound();
             }
 
-            var address = addressService.GetByIdAsync(id.Value, Uid);
+            var address = await addressService.GetByIdAsync(id.Value, Uid);
             if (address == null)
             {
                 return NotFound();
             }
 
-            return View(address);
+            AddressRequest addressRequest = new() { CEP = address.CEP, City = address.City, Neighborhood = address.Neighborhood, Number = address.Number.ToString(), State = address.State, Street = address.Street, Complement = address.Complement };
+
+            return View(addressRequest);
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var address = await addressService.GetByIdAsync(id.Value, Uid);
+            if (address == null)
+            {
+                return NotFound();
+            }
+
+            AddressRequest addressRequest = new() { Id = address.Id, CEP = address.CEP, City = address.City, Neighborhood = address.Neighborhood, Number = address.Number.ToString(), State = address.State, Street = address.Street, Complement = address.Complement };
+
+            return View(addressRequest);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAddress(int? id)
+        {
+            var address = await addressService.GetByIdAsync(id.Value, Uid);
+            if (address == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                await addressService.DeleteAddress(id.Value, Uid);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
         }
 
 

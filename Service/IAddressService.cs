@@ -12,5 +12,7 @@ namespace Service
 
         Task<Address?> GetByIdAsync(int id, int uid);
 
+        Task<BaseResponse> DeleteAddress(int id, int uid);
+
     }
 }

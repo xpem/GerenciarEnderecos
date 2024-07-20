@@ -15,7 +15,7 @@ namespace Infra
 
         public async Task<List<Address>> GetAsync(int uid) => await appDbContext.Address.Where(x => x.UserId == uid).ToListAsync();
 
-        public async Task Delete(int id, int uid)
+        public async Task DeleteAsync(int id, int uid)
         {
             appDbContext.ChangeTracker?.Clear();
             await appDbContext.Address.Where(x => x.Id == id && x.UserId == uid).ExecuteDeleteAsync();

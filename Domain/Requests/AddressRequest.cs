@@ -1,15 +1,12 @@
 ﻿using Domain.Requests.User;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Requests
 {
     public record AddressRequest : BaseRequest
     {
+        public int? Id { get; set; }
+
         [MaxLength(8)]
         [MinLength(8)]
         public required string CEP { get; set; }
