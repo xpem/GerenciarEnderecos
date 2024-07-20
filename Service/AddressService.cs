@@ -2,6 +2,7 @@
 using Domain.DTOs;
 using Domain.Requests;
 using Infra;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -34,5 +35,26 @@ namespace Service
         public async Task<List<Address>> GetAsync(int uid) => await addressRepo.GetAsync(uid);
 
         public async Task<Address?> GetByIdAsync(int id, int uid) => await addressRepo.GetByIdAsync(id, uid);
+
+        public async Task<BaseResponse> DeleteAddress(int id, int uid)
+        {
+            var address = await addressRepo.GetByIdAsync(id, uid);
+
+            if (address == null)
+                return new BaseResponse(null, "Invalid id");
+
+            try
+            {
+                await addressRepo.DeleteAsync(id, uid);
+
+                return new BaseResponse("");
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                return new BaseResponse(null, "Não foi possivel excluir.");
+            }
+
+        }
+
     }
 }

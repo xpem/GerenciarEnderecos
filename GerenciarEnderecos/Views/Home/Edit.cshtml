@@ -1,5 +1,81 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Domain.Requests.AddressRequest;
 @{
+    ViewData["Title"] = "Editar endereço";
 }
+<div class="container">
+    @if (!string.IsNullOrEmpty(ViewBag.Error?.Message))
+    {
+        <div class='alert alert-dismissable alert-info'>
+            <button type='button' class='close' data-dismiss='alert'>x</button>
+            @ViewBag.Message
+        </div>
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @ViewBag.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+    }
+
+    @if (TempData.ContainsKey("Success"))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="card" id="CardFormAddress">
+        <div class="card-header" style=" background-color: var(--bs-success); color: var(--bs-body-bg); ">
+            Cadastrar Endereço
+        </div>
+        <div class="card-body container">
+            <form asp-action="CreateAddress">
+                <div class="col-md-12">
+                    <label asp-for="CEP" class="form-label">CEP(Apenas Números)</label>
+                    <input asp-for="CEP" type="text" class="form-control" aria-describedby="CEPHelp">
+                    <span asp-validation-for="CEP" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="Street" class="form-label">Rua</label>
+                        <input asp-for="Street" type="text" class="form-control">
+                        <span asp-validation-for="Street" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Number" class="form-label">Número</label>
+                        <input asp-for="Number" type="text" class="form-control">
+                        <span asp-validation-for="Number" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Complement" class="form-label">Complemento</label>
+                        <input asp-for="Complement" type="text" class="form-control">
+                        <span asp-validation-for="Complement" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="Neighborhood" class="form-label">Bairro</label>
+                        <input asp-for="Neighborhood" type="text" class="form-control">
+                        <span asp-validation-for="Neighborhood" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="City" class="form-label">Cidade</label>
+                        <input asp-for="City" type="text" class="form-control">
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="State" class="form-label">Estado</label>
+                        <input asp-for="State" type="text" class="form-control">
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>
+                </div>
+                <br />
+                <div class="d-grid gap-2 d-md-block">
+                    <button type="submit" class="btn btn-success" value="Create">Cadastrar</button>
+                    <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Voltar</a>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
