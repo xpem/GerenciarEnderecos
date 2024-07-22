@@ -28,7 +28,7 @@ namespace Domain.Requests
         [MaxLength(200)]
         public required string City { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(2)]
         public required string State { get; set; }
     }
 }

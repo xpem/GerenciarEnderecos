@@ -32,8 +32,8 @@ builder.Services.AddSession(options =>
 });
 
 string? conn = builder.Configuration["ConnectionStrings:DefaultConnection"];
-builder.Services.AddMySql<AppDbContext>(conn, ServerVersion.AutoDetect(conn));
-
+//builder.Services.AddMySql<AppDbContext>(conn, ServerVersion.AutoDetect(conn));
+builder.Services.AddSqlServer<AppDbContext>(conn);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
