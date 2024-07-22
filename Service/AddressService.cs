@@ -3,6 +3,9 @@ using Domain.DTOs;
 using Domain.Requests;
 using Infra;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 
 namespace Service
 {
