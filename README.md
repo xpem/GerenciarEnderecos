@@ -6,6 +6,7 @@ banco de dados:
 Configure a connection string no appsettings e as chaves de criptografia da senha:
 Exemplo de chaves a serem adicionas:
 
+AppSettings.json :
 ```json
   "ConnectionStrings": {
     "DefaultConnection": "<conn string>"
@@ -26,7 +27,7 @@ Crie o banco de dados executanto uma migration:
 EntityFrameworkCore\Add-Migration "Init" -Context AppDbContext
 EntityFrameworkCore\update-database -Context AppDbContext
 
-#### to remove last migration snapshot
+#### Caso queira remover o ultimo snapshot
 //EntityFrameworkCore\Remove-Migration -Context AppDbContext
 
 ##Navegação
