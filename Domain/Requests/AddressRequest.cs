@@ -9,9 +9,11 @@ namespace Domain.Requests
 
         [MaxLength(8)]
         [MinLength(8)]
+        [RegularExpression("([1-9][0-9]*)")]
         public required string CEP { get; set; }
 
         [MaxLength(5)]
+        [RegularExpression("([1-9][0-9]*)")]
         public required string Number { get; set; }
 
         [MaxLength(200)]

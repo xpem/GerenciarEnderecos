@@ -56,5 +56,32 @@ namespace Service
 
         }
 
+        public async Task<BaseResponse> UpdateAsync(AddressRequest addressRequest, int uid)
+        {
+            try
+            {
+                string? validateError = addressRequest.Validate();
+                if (!string.IsNullOrEmpty(validateError)) return new BaseResponse(null, validateError);
+
+                Address? address = await addressRepo.GetByIdAsync(Convert.ToInt32(addressRequest.Id), uid);
+
+                if (address == null)
+                    return new BaseResponse(null, "Invalid id");
+
+                address.CEP = addressRequest.CEP;
+                address.City = addressRequest.City;
+                address.Complement = addressRequest.Complement;
+                address.Neighborhood = addressRequest.Neighborhood;
+                address.Number = Convert.ToInt32(addressRequest.Number);
+                address.State = addressRequest.State;
+                address.Street = addressRequest.Street;
+
+                await addressRepo.Update(address);
+
+                return new BaseResponse("");
+            }
+            catch { throw; }
+        }
+
     }
 }

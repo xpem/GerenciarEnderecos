@@ -36,7 +36,12 @@ namespace GerenciarEnderecos.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-            else return View(resp);
+            else
+            {
+                TempData["Error"] = "Senha ou email incorreto(s)!";
+
+                return View();
+            }
         }
 
         [Route("SignOut")]
@@ -44,7 +49,7 @@ namespace GerenciarEnderecos.Controllers
         public async Task<IActionResult> SignOutAsync()
         {
             HttpContext.Session.Remove("Token");
-            return View("SignIn", "User");
+            return View("SignIn");
         }
     }
 }

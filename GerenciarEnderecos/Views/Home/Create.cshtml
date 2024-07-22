@@ -2,6 +2,111 @@
 @{
     ViewData["Title"] = "Adicionar endereço";
 }
+<script>
+    window.onload = function () {
+
+        function OnlyNumber(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+
+        function ToggleEnabledAddress(enabled) {
+            var street = document.getElementById('StreetInput'),
+                number = document.getElementById('NumberInput'),
+                complement = document.getElementById('ComplementInput'),
+                Neighborhood = document.getElementById('NeighborhoodInput'),
+                City = document.getElementById('CityInput'),
+                CreateBtn = document.getElementById('CreateBtn'),
+                State = document.getElementById('StateInput');
+
+            console.log(street);
+            if (!enabled) {
+                street.disabled = number.disabled = complement.disabled = Neighborhood.disabled = City.disabled = State.disabled = CreateBtn.disabled = true
+            }
+            else {
+                street.disabled = number.disabled = complement.disabled = Neighborhood.disabled = City.disabled = State.disabled = CreateBtn.disabled = false
+            }
+        }
+
+        function SetAddressValues(logradouro, complemento, bairro, localidade, uf) {
+            var street = document.getElementById('StreetInput'),
+                Neighborhood = document.getElementById('NeighborhoodInput'),
+                City = document.getElementById('CityInput'),
+                State = document.getElementById('StateInput');
+
+            if (logradouro) {
+                street.value = logradouro;
+            }
+            if (bairro) {
+                Neighborhood.value = bairro;
+            }
+            if (localidade) {
+                City.value = localidade;
+            }
+            if (uf) {
+                State.value = uf;
+            }
+        }
+
+        var CEPInput = document.getElementById('CEPInput');
+        var NumberInput = document.getElementById('NumberInput');
+        ToggleEnabledAddress(false);
+
+        CEPInput.addEventListener('keypress', (event) => {
+            OnlyNumber(event)
+        });
+
+        NumberInput.addEventListener('keypress', (event) => {
+            OnlyNumber(event)
+        });
+
+        CEPInput.addEventListener('change', () => {
+            var cepValue = CEPInput.value;
+            if (cepValue.length == 8) {
+                // Replace with your API URL
+                const apiUrl = 'https://viacep.com.br/ws/' + cepValue + '/json/';
+                fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Handle the response data
+                        console.log(data);
+
+                        const { cep, logradouro, complemento, bairro, localidade, uf } = data
+
+                        SetAddressValues(logradouro, complemento, bairro, localidade, uf);
+
+                        // CEPInput.value = JSON.stringify(data, null, 2);
+                        ToggleEnabledAddress(true);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        // document.getElementById('result').innerText = 'Error: ' + error.message;
+                    });
+            } else {
+                ToggleEnabledAddress(false);
+            }
+        });    
+    }
+</script>
+
 <div class="container">
     @if (!string.IsNullOrEmpty(ViewBag.Error?.Message))
     {
@@ -32,46 +137,48 @@
             <form asp-action="CreateAddress">
                 <div class="col-md-12">
                     <label asp-for="CEP" class="form-label">CEP(Apenas Números)</label>
-                    <input asp-for="CEP" type="text" class="form-control" aria-describedby="CEPHelp">
+                    <input asp-for="CEP" id="CEPInput" type="text" class="form-control" maxlength="8" aria-describedby="CEPHelp">
                     <span asp-validation-for="CEP" class="text-danger"></span>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label asp-for="Street" class="form-label">Rua</label>
-                        <input asp-for="Street" type="text" class="form-control">
-                        <span asp-validation-for="Street" class="text-danger"></span>
+                <div id="AddressComponent">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="Street" class="form-label">Rua</label>
+                            <input asp-for="Street" type="text" class="form-control" id="StreetInput" required>
+                            <span asp-validation-for="Street" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="Number" class="form-label">Número</label>
+                            <input asp-for="Number" type="text" class="form-control" id="NumberInput" required>
+                            <span asp-validation-for="Number" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="Complement" class="form-label">Complemento</label>
+                            <input asp-for="Complement" type="text" class="form-control" id="ComplementInput">
+                            <span asp-validation-for="Complement" class="text-danger"></span>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label asp-for="Number" class="form-label">Número</label>
-                        <input asp-for="Number" type="text" class="form-control">
-                        <span asp-validation-for="Number" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="Complement" class="form-label">Complemento</label>
-                        <input asp-for="Complement" type="text" class="form-control">
-                        <span asp-validation-for="Complement" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label asp-for="Neighborhood" class="form-label">Bairro</label>
-                        <input asp-for="Neighborhood" type="text" class="form-control">
-                        <span asp-validation-for="Neighborhood" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="City" class="form-label">Cidade</label>
-                        <input asp-for="City" type="text" class="form-control">
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label asp-for="State" class="form-label">Estado</label>
-                        <input asp-for="State" type="text" class="form-control">
-                        <span asp-validation-for="State" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="Neighborhood" class="form-label">Bairro</label>
+                            <input asp-for="Neighborhood" type="text" class="form-control" id="NeighborhoodInput" required>
+                            <span asp-validation-for="Neighborhood" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="City" class="form-label">Cidade</label>
+                            <input asp-for="City" type="text" class="form-control" id="CityInput" required>
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="State" class="form-label">Estado</label>
+                            <input asp-for="State" type="text" class="form-control" id="StateInput" required maxlength="2">
+                            <span asp-validation-for="State" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
                 <br />
                 <div class="d-grid gap-2 d-md-block">
-                    <button type="submit" class="btn btn-success" value="Create">Cadastrar</button>
+                    <button type="submit" class="btn btn-success" value="Create" id="CreateBtn">Cadastrar</button>
                     <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Voltar</a>
 
                 </div>
